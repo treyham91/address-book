@@ -5,15 +5,36 @@
   </div>
 </template>
 
-<script>
-import HelloWorld from './components/HelloWorld.vue'
+<script lang="ts">
+  import Vue from 'vue'
+  import HelloWorld from './components/HelloWorld.vue'
 
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
+  interface PhoneNumber {
+    phone: number;
+    primary: boolean;
   }
-}
+
+  interface ContactProps {
+    photo: string;
+    salutation: string;
+    firstName: string;
+    lastName: string;
+    companyName: string;
+    phoneNumber: Array<PhoneNumber>;
+  }
+
+  let store = {
+    contacts: Array(0),
+    currentUser: "",
+    favorites: Array(0)
+  }
+
+  export default Vue.extend( {
+    name: 'App',
+    components: {
+      HelloWorld
+    }
+  })
 </script>
 
 <style>
