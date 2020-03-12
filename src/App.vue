@@ -1,40 +1,27 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
     <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <Login />
   </div>
 </template>
 
-<script lang="ts">
-  import Vue from 'vue'
+<script>
   import HelloWorld from './components/HelloWorld.vue'
+  import Login from './components/forms/Login';
 
-  interface PhoneNumber {
-    phone: number;
-    primary: boolean;
-  }
+  // let store = {
+  //   contacts: Array(0),
+  //   currentUser: "",
+  //   favorites: Array(0)
+  // }
 
-  interface ContactProps {
-    photo: string;
-    salutation: string;
-    firstName: string;
-    lastName: string;
-    companyName: string;
-    phoneNumber: Array<PhoneNumber>;
-  }
-
-  let store = {
-    contacts: Array(0),
-    currentUser: "",
-    favorites: Array(0)
-  }
-
-  export default Vue.extend( {
+  export default {
     name: 'App',
     components: {
-      HelloWorld
+      HelloWorld,
+      Login
     }
-  })
+  }
 </script>
 
 <style>
