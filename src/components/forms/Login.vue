@@ -1,11 +1,11 @@
 <template>
     <div>
         <form-base class="form-base-container" v-bind:submit="login(username, password)">
-            <h2>Accudress</h2>
+            <h2>Accudress Book</h2>
             <p>Enter any username or password to login</p>
-            <p style="font-style:italic;">* indicates a required field</p>
+            <p style="font-style:italic; font-size: 13px;">* indicates a required field</p>
             <div>
-                <label for="username">Username</label>
+                <label for="username">* Username</label>
                 <input
                         id="username"
                         type="text"
@@ -24,7 +24,7 @@
                         @change="event => handlePasswordInput(event.target.value)"
                 >
             </div>
-            <input type="submit" value="Submit" @submit="login(username, password)" v-bind:disabled="disableSubmitButton()">
+            <input type="submit" v-bind:value="this.$data.loading ? 'Logging in...' : 'Login'" @submit="login(username, password)" v-bind:disabled="disableSubmitButton">
         </form-base>
     </div>
 </template>
@@ -40,16 +40,21 @@
                 password: "",
                 errorText: "",
                 formError: false,
+                loading: false,
             };
         },
         components: {
             'form-base': FormBase
         },
+        computed: {
+            disableSubmitButton() {
+                return (!this.$data.username.trim() || !this.$data.password.trim());
+            }
+        },
         methods: {
             login: async function (username, password) {
 
                 let loginPromise = new Promise(() => {
-                    setTimeout(() => {
                         if (!username.trim() || username === undefined) {
                             this.errorText = "Please fill in a username field";
                             this.formError = true;
@@ -60,29 +65,21 @@
                             // we will only need to store the username
                             this.username = username;
                         }
-                    }, 1000);
-                })
+                    })
 
-                return await loginPromise;
+                loginPromise
+                    .then(() => window.location.href += '/contact-list')
+                    .catch(err => this.errorText = err.msg())
             },
             handleUsernameInput(value) {
                 this.$data.username = value;
-                console.log(this.$data.username);
             },
             handlePasswordInput(value) {
                 this.$data.password = value;
-                console.log(this.$data.password);
             },
-            disableSubmitButton() {
-                return (!this.$data.username.trim() || !this.$data.password.trim());
-            }
         }
     };
 </script>
-
-<!--<style lang="sass" scoped>-->
-
-<!--</style>-->
 
 <style lang="sass" scoped>
     input
@@ -103,4 +100,5 @@
 
     .form-base-container div
         display: table-row
+        width: 50%
 </style>
