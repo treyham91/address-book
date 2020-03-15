@@ -1,7 +1,7 @@
 <template>
-    <div>
-        <p>Add contacts to see them here</p>
-    </div>
+    <tr>
+        <td>Add contacts to see them here</td>
+    </tr>
 </template>
 
 <script>
@@ -11,7 +11,7 @@
 </script>
 
 <style lang="sass" scoped>
-    p
+    td
         color: lightgray
         font-size: 20px
 

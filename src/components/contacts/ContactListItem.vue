@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-bind:class="className">
         <td>{{ this.$props.contactPhoto }}</td>
         <td>{{ this.$props.salutation }}</td>
         <td>{{ this.$props.name }}</td>
@@ -17,6 +17,7 @@
             name: String,
             companyName: String,
             phoneNumber: Number,
+            className: String,
         }
     }
 </script>

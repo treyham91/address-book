@@ -1,5 +1,5 @@
 <template>
-    <form @submit="submit">
+    <form @submit="submit" v-bind:method="method" v-bind:action="action">
         <slot></slot>
     </form>
 </template>
@@ -8,7 +8,9 @@
     export default {
         name: 'FormBase',
         props: {
-            submit: Promise,
+            submit: Function,
+            method: String,
+            action: String,
         }
     };
 </script>
