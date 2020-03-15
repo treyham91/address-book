@@ -9,7 +9,7 @@
                 <th>Phone Number</th>
             </tr>
         </thead>
-        <tbody v-if="this.$data.store.contacts.length">
+        <tbody v-if="this.$data.store.$data.contacts.length">
             <tr v-for="(contact, index) in contactList" :key="contact.name">
                 <ContactListItem
                         v-bind:class-name="index + 1 % 2 === 0 ? 'even-item' : 'odd-item'"

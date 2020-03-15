@@ -69,7 +69,7 @@
                             this.formError = true;
                         } else {
                             // we will only need to store the username
-                            store.currentUser = this.username;
+                            store.$data.currentUser = this.username;
                         }
                     })
 

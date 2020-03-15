@@ -34,10 +34,10 @@
         },
         computed: {
             currentUser() {
-                return store.currentUser;
+                return store.$data.currentUser;
             },
             contacts() {
-                return store.contacts;
+                return store.$data.contacts;
             }
         },
         methods: {

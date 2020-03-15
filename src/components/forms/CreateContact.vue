@@ -33,7 +33,7 @@
             <div id="phone-number-field">
                 <label for="phoneNumber">Phone Number</label>
                 <input id="phoneNumber" type="tel" v-model="phoneNumber">
-                <input type="button" @click="setPrimaryNumber" value="Set as primary">
+                <Button v-bind:click="setPrimaryNumber" value="Set as primary" />
             </div>
             <div><button id="add-number" @click="addNewNumber">Add number</button></div>
             <div>
@@ -45,11 +45,14 @@
 
 <script>
     import FormBase from "@/components/forms/FormBase";
+    import Button from "@/components/tools/Button";
+
     import store from "@/store";
     export default {
         name: "CreateContact",
         components: {
-            FormBase
+            FormBase,
+            Button
         },
         data () {
             return {
@@ -101,7 +104,7 @@
 
                             this.$data.phoneNumbers.push(phoneNumbers[i].value);
                         }
-                        if (!this.formError) store.contacts.concat(this.$data);
+                        if (!this.formError) store.$data.contacts.push(this.$data);
                     }
                 })
 
@@ -115,13 +118,18 @@
             addNewNumber(event) {
                 event.preventDefault();
                 let phoneNumberField = document.getElementById("phone-number-field");
+                let primaryButton = document.createElement("button");
                 const newInputWrapper = document.createElement("div");
                 const newInput = document.createElement("input");
 
+                primaryButton.onclick = this.setPrimaryNumber();
+                primaryButton.innerText = "Set as primary";
                 newInputWrapper.style.padding = "10px";
                 newInput.type = "tel";
+
                 newInputWrapper.append(newInput);
                 phoneNumberField.append(newInputWrapper);
+                newInputWrapper.append(primaryButton);
             },
             setPrimaryNumber() {
 
