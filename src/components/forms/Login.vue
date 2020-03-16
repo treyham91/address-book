@@ -1,6 +1,6 @@
 <template>
     <div>
-        <form-base action="contact-list" class="form-base-container" v-bind:submit="() => login(username, password)">
+        <form-base action="contact-list" class="form-base-container" v-bind:submit="login">
             <h2>Accudress Book</h2>
             <p>Enter any username or password to login</p>
             <p style="font-style:italic; font-size: 13px;">* indicates a required field</p>
@@ -14,7 +14,7 @@
                         type="text"
                         v-model="username"
                         placeholder="Username"
-                        @change="event => handleUsernameInput(event.target.value)"
+                        v-on:change="handleUsernameInput($event.target.value)"
                 >
             </div>
             <div>
@@ -24,7 +24,7 @@
                         type="password"
                         v-model="password"
                         placeholder="Password"
-                        @change="event => handlePasswordInput(event.target.value)"
+                        v-on:change="handlePasswordInput($event.target.value)"
                 >
             </div>
             <input type="submit" v-bind:value="this.$data.loading ? 'Logging in...' : 'Login'" v-bind:disabled="disableSubmitButton">
@@ -34,7 +34,6 @@
 
 <script>
     import FormBase from "@/components/forms/FormBase";
-    import store from "@/store";
 
     export default {
         name: "Login",
@@ -57,26 +56,21 @@
             }
         },
         methods: {
-            login: async function (username, password) {
+            login: function () {
                 // The button will be disabled until text is recognized in both
                 // inputs, but will add form validation for added security
-                let loginPromise = new Promise(() => {
-                        if (!username.trim() || username === undefined) {
-                            this.errorText = "Please fill in a username field";
-                            this.formError = true;
-                        } else if (!password.trim() || password === undefined) {
-                            this.errorText = "Please fill in a password field";
-                            this.formError = true;
-                        } else {
-                            // we will only need to store the username
-                            store.$data.currentUser = this.username;
-                        }
-                    })
+                    if (!this.username.trim() || this.username === undefined) {
+                        this.errorText = "Please fill in a username field";
+                        this.formError = true;
+                    }
 
-                loginPromise
-                    .then(() => console.log("Login success!"))
-                    .catch(err => this.errorText = err.msg())
-            },
+                    if (!this.password.trim() ||this.password === undefined) {
+                        this.errorText = "Please fill in a password field";
+                        this.formError = true;
+                    }
+
+                    this.$root.$data.appData.username = this.username;
+                },
             // Change events
             handleUsernameInput(value) {
                 this.$data.username = value;

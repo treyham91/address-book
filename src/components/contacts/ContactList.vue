@@ -9,8 +9,8 @@
                 <th>Phone Number</th>
             </tr>
         </thead>
-        <tbody v-if="this.$data.store.$data.contacts.length">
-            <tr v-for="(contact, index) in contactList" :key="contact.name">
+        <tbody id="contact-list-body" v-if="contacts">
+            <tr v-for="(contact, index) in contacts" :key="contact.name">
                 <ContactListItem
                         v-bind:class-name="index + 1 % 2 === 0 ? 'even-item' : 'odd-item'"
                         v-bind:contact-photo="contact.contactPhoto"
@@ -27,7 +27,6 @@
 <script>
     import ContactListItem from "@/components/contacts/ContactListItem";
     import NoContacts from "@/components/contacts/NoContacts";
-    import store from "@/store";
 
     export default {
         name: "ContactList",
@@ -35,9 +34,9 @@
             ContactListItem,
             NoContacts
         },
-        data () {
-            return {
-                store
+        computed: {
+            contacts() {
+                return this.$root.$data.contacts;
             }
         }
     }

@@ -1,7 +1,7 @@
 <template>
     <dialog v-bind:class="open ? 'create-contact-shown': 'create-contact-hidden'">
-        <FormBase v-bind:submit="() => addContact">
-            <p id="error" v-if="this.$data.formError">
+        <FormBase v-bind:submit="addContact">
+            <p id="error" v-if="this.formError">
                 {{ errorText }}
             </p>
             <div></div><div id="close" @click="closeForm">X</div>
@@ -33,9 +33,9 @@
             <div id="phone-number-field">
                 <label for="phoneNumber">Phone Number</label>
                 <input id="phoneNumber" type="tel" v-model="phoneNumber">
-                <Button v-bind:click="setPrimaryNumber" value="Set as primary" />
+                <button v-on:click="setPrimaryNumber($event)">Set as primary</button>
             </div>
-            <div><button id="add-number" @click="addNewNumber">Add number</button></div>
+            <div><button id="add-number" v-on:click="addNewNumber($event)">Add number</button></div>
             <div>
                 <input type="submit" value="Create" v-bind:disabled="disableSubmitButton">
             </div>
@@ -45,14 +45,11 @@
 
 <script>
     import FormBase from "@/components/forms/FormBase";
-    import Button from "@/components/tools/Button";
 
-    import store from "@/store";
     export default {
         name: "CreateContact",
         components: {
             FormBase,
-            Button
         },
         data () {
             return {
@@ -69,9 +66,9 @@
         computed: {
             // Keep the submit button disabled until all inputs have text
             disableSubmitButton() {
-                return (!this.$data.salutation.trim() || !this.$data.firstName.trim()
-                        || !this.$data.lastName.trim()  || !this.$data.companyName.trim()
-                        || !this.$data.phoneNumber.trim());
+                return (!this.salutation.trim() || !this.firstName.trim()
+                        || !this.lastName.trim()  || !this.companyName.trim()
+                        || !this.phoneNumber.toString().trim());
             },
         },
         props: {
@@ -81,20 +78,20 @@
         methods: {
             addContact: async function() {
                 let contactPromise = new Promise(() => {
-                    if (!this.$data.salutation.trim() || this.$data.salutation === undefined) {
+                    if (!this.salutation.trim() || this.salutation === undefined) {
                         this.errorText = "Please fill in the salutation field";
                         this.formError = true;
-                    } else if (!this.$data.firstName.trim() || this.$data.firstName === undefined) {
+                    } else if (!this.firstName.trim() || this.firstName === undefined) {
                         this.errorText = "Please fill in the first name field";
                         this.formError = true;
-                    } else if (!this.$data.lastName.trim() || this.$data.lastName === undefined) {
+                    } else if (!this.lastName.trim() || this.lastName === undefined) {
                         this.errorText = "Please fill in the last name field";
                         this.formError = true;
-                    } else if (!this.$data.companyName.trim() || this.$data.companyName === undefined) {
+                    } else if (!this.companyName.trim() || this.companyName === undefined) {
                         this.errorText = "Please fill in the company name field";
                         this.formError = true;
                     } else {
-                        const phoneNumbers = document.querySelector("input[type=tel]");
+                        const phoneNumbers = document.querySelector("input[type='tel']");
                         for (let i = 0; i < phoneNumbers.length; i++) {
                             if (!phoneNumbers[i].value.trim() || phoneNumbers[i].value === undefined
                                 || typeof Number.parseInt(phoneNumbers[i].value) != "number") {
@@ -102,9 +99,11 @@
                                 this.formError = true;
                             }
 
-                            this.$data.phoneNumbers.push(phoneNumbers[i].value);
+                            this.phoneNumber.push(phoneNumbers[i].value);
                         }
-                        if (!this.formError) store.$data.contacts.push(this.$data);
+
+                        console.log(this.$data);
+                        if (!this.formError) this.$root.$data.appData.addContact(this.$data);
                     }
                 })
 
@@ -115,8 +114,10 @@
             inputFileType(event) {
                 this.$data.photo = event.target.files[0];
             },
-            addNewNumber(event) {
-                event.preventDefault();
+            addNewNumber: function (event) {
+                if (event) {
+                    event.preventDefault();
+                }
                 let phoneNumberField = document.getElementById("phone-number-field");
                 let primaryButton = document.createElement("button");
                 const newInputWrapper = document.createElement("div");
@@ -131,8 +132,10 @@
                 phoneNumberField.append(newInputWrapper);
                 newInputWrapper.append(primaryButton);
             },
-            setPrimaryNumber() {
-
+            setPrimaryNumber(event) {
+                if (event) {
+                    event.preventDefault();
+                }
             }
         }
     }

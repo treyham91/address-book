@@ -1,11 +1,13 @@
 <template>
     <div>
-        <h2>Welcome, {{currentUser}}!</h2>
+        <h2>Welcome, {{ currentUser }}!</h2>
         <ToolBar>
             <Button v-bind:click="handleCreateContactForm" value="Create Contact"/>
         </ToolBar>
-        <ContactList v-bind:contact-list="contacts" />
-        <ContactDetails />
+        <div id="contact-container">
+            <ContactList v-bind:contact-list="contacts" />
+            <ContactDetails />
+        </div>
         <CreateContact v-bind:close-form="handleCreateContactForm" v-bind:open="showCreateContactForm" />
     </div>
 </template>
@@ -16,7 +18,6 @@
     import CreateContact from "@/components/forms/CreateContact";
     import ToolBar from "@/components/tools/ToolBar";
     import Button from "@/components/tools/Button";
-    import store from "@/store";
 
     export default {
         name: "ContactsOverview",
@@ -34,10 +35,10 @@
         },
         computed: {
             currentUser() {
-                return store.$data.currentUser;
+                return this.$root.$data.appData.username;
             },
             contacts() {
-                return store.$data.contacts;
+                return this.$root.$data.appData.contacts;
             }
         },
         methods: {
@@ -58,6 +59,9 @@
     }
 </script>
 
-<style scoped>
-
+<style lang="sass" scoped>
+    #contact-container
+        display: flex
+        flex-direction: row
+        flex-wrap: wrap
 </style>

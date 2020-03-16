@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import Login from "@/components/forms/Login";
 import ContactsOverview from "@/components/contacts/ContactsOverview";
+import store from "@/store";
 
 Vue.config.productionTip = false
 
@@ -14,7 +15,8 @@ const routes = {
 new Vue({
   el: '#app',
   data: {
-    currentRoute: window.location.pathname
+    currentRoute: window.location.pathname,
+    appData: store
   },
   computed: {
     AppComponent () {

@@ -1,5 +1,5 @@
 <template>
-    <form @submit="submit" v-bind:method="method" v-bind:action="action">
+    <form v-on:submit="submit" v-bind:method="method" v-bind:action="action">
         <slot></slot>
     </form>
 </template>
